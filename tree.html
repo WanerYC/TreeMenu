@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+        body{
+            user-select:none;
+        }
+        ul,li{list-style: none;margin:0;padding: 0;}
+        .tabs{width:500px;margin:0 auto;background: #d69b9b;color: #fff;padding: 0 20px;}
+        .tabs-cell{margin: 20px 0;}
+        .tabs-cell ul{display: none;}
+        .tabs-cell-2{margin-left: 45px;}
+        .tabs-cell-2 li{padding: 7px 0;background: gainsboro;margin: 4px 0;}
+    </style>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="./art-template.js"></script>
+   
+   
+</head>
+<body>
+    <div>
+        <input type="checkBox" class="checkAll" onclick="clickAll()" id="all"/><label for="all">爱好(全选)</label>
+    </div>
+    <div id="tab">
+        <!-- <li><input type="checkBox" class="checkOne" onclick="clickOne()" id="ck1"/><label for="ck1">足球</label></li>
+        <li><input type="checkBox" class="checkOne" onclick="clickOne()" id="ck2"/><label for="ck2">网球</label></li>
+        <li><input type="checkBox" class="checkOne" onclick="clickOne()" id="ck3"/><label for="ck3">篮球</label></li> -->
+    </div>
+
+
+    <script id="tpl" type="text/html">
+        <ul>
+            <%for(var i in items){%>   
+                <li>
+                    <input type="checkBox" class="checkOne" onclick="clickOne()" id="<%=items[i].id%>" for="<%=items[i].id%>"/><label for="ck1">
+                    <%=items[i].name%>
+                </li>
+            <%}%>
+        </ul>
+    </script>
+
+    <script type="text/javascript" charset="utf-8">
+        $(function () {
+            var data={
+                items:[
+                    {'name':'足球', 'id': 'ck1'},
+                    {'name':'网球', 'id': 'ck2'},
+                    {'name':'名字三', 'id': 'ck3'},
+                    {'name':'篮球', 'id': 'ck4'},
+                    {'name':'棒球', 'id': 'ck4'}
+                ]
+            }
+            var html = template('tpl', data);
+            document.getElementById('tab').innerHTML = html;
+            $('#tab').html(html)
+
+
+        })
+    </script>
+    <script>
+         function clickAll(){
+                $(".checkOne").prop("checked",$(".checkAll").prop("checked"));
+            }
+            
+        function clickOne(){
+            var allChecked = true;
+            $(".checkOne").each(function(){
+                if($(this).prop("checked") == false){
+                    allChecked = false;
+                };
+            });
+            if(allChecked){
+                $(".checkAll").prop("checked",true);
+            } else {
+                $(".checkAll").prop("checked",false);
+            }
+        }
+
+    </script>
+    <!-- <div class="tabs">
+        <div class="tabs-cell">
+            <div>菜单一</div>
+            <ul>
+                <li class="tabs-cell tabs-cell-2">
+                    <div>菜单一一</div>
+                    <ul >
+                        <li>1-1-1</li>
+                        <li>1-1-2</li>
+                        <li>1-1-3</li>
+                        <li>1-1-4</li>
+                        <li>1-1-4</li>
+                    </ul>
+                </li>
+                <li class="tabs-cell tabs-cell-2">
+                    <div>菜单一二</div>
+                    <ul>
+                        <li>1-2-1</li>
+                        <li>1-2-2</li>
+                        <li>1-2-3</li>
+                        <li>1-2-4</li>
+                    </ul>
+                </li>
+                <li class="tabs-cell tabs-cell-2">
+                    <div>菜单一三</div>
+                    <ul>
+                        <li>1-3-1</li>
+                        <li>1-3-2</li>
+                        <li>1-3-3</li>
+                        <li>1-3-4</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="tabs-cell">
+            <div>菜单二</div>
+            <ul>
+                <li class="tabs-cell tabs-cell-2">
+                    <div>菜单二一</div>
+                </li>
+                <li class="tabs-cell tabs-cell-2">
+                    <div>菜单二二</div>
+                    
+                </li>
+                <li class="tabs-cell tabs-cell-2">
+                    <div>菜单二三</div>
+                    
+                </li>
+            </ul>
+        </div>
+        
+    </div>
+    <script>
+        var  cell=document.getElementsByClassName('tabs-cell')
+        var tabs=document.getElementsByClassName('tabs')[0]
+        for(var i=0;i<cell.length;i++){
+            cell[i].flag=true;
+            cell[i].onclick=function(ev){
+                isShow(this)
+                ev.stopPropagation()
+            }
+        }
+
+        function isShow(obj){
+
+            var  children=obj.parentNode.children
+            for (var i = 0; i < children.length; i++) {
+/*                var ul=children[i].getElementsByTagName('ul')[0];
+                ul.style.display='none'*/
+                var ul=children[i].getElementsByTagName('ul');
+                for (var k = 0; k < ul.length; k++) {
+                    ul[k].style.display='none'
+                }
+                
+                
+                if(children[i]!=obj){//改变this上下相邻元素的开关状态
+                    children[i].flag=true;
+                }
+            }
+
+        
+            if(obj.flag){
+                obj.getElementsByTagName('ul')[0].style.display='block'
+                
+            }else{
+                obj.getElementsByTagName('ul')[0].style.display='none'
+                
+            }
+
+            obj.flag=!obj.flag
+                
+        }
+
+ 
+// https://blog.csdn.net/wkj001/article/details/53840471  原生js如何获取当前元素的同级元素
+//实现原理:获取当前元素之后，然后在获取它的父元素，再获取父元素的所有子元素，最后遍历判断每一个子元素是不是当前元素，不是就将它的字体颜色设置为红色，就这么简单。
+    </script> -->
+</body>
+</html>

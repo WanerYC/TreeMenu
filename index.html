@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+        body{
+            user-select:none;
+        }
+        ul, li {
+            list-style: none;
+        }
+        .hidden{
+		    display: none;
+	    }
+    </style>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="./art-template.js"></script>
+   
+   
+</head>
+<body>
+    <div>
+        <input type="checkBox" class="checkAll" onclick="clickAlls()" id="all"/><label for="all">全选</label>
+    </div>
+    <div id="tab"></div>
+
+
+    <!-- <script id="tpl" type="text/html">
+        <ul>
+                <%for(var i = 0;i < menus.length;i++){%>
+                    <li>
+                        <input type="checkBox" class="checkOne" onclick="clickOne()" />
+                        <%=menus[i].menu_name%>
+                        <ul>
+                        <%for(var j = 0;j < menus[i].submenu.length;j++){%>
+                            <li class='cy-detail'>
+                                <input type="checkBox" class="checkOne" onclick="clickOne()" />
+                                <%=menus[i].submenu[j].submenu_name%>   
+                                <ul>
+                                    <%for(var k = 0;k < menus[i].submenu[j].subsubmenu.length;k++){%>
+                                        <li>
+                                            <input type="checkBox" class="checkOne" onclick="clickOne()" />
+                                            <%=menus[i].submenu[j].subsubmenu[k]%>
+                                        </li>
+                                    <%}%>
+                                </ul>
+                            </li>
+                        <%}%>
+                        </ul>
+                    </li>
+                <%}%>
+        </ul>
+    </script> -->
+
+    <script id="tpl" type="text/html">
+        <ul class="treeMenu"  onclick="clickOne()" >
+            <%for(var i = 0;i < menus.length;i++){%>
+                <li class="treeMenuO">
+                    <div class="inputs">
+                        <input type="checkBox" class="checkOne" /><%=menus[i].menu_name%>
+                    </div>
+                    <ul class="hidden treeMenuT" >
+                        <%for(var j = 0;j < menus[i].submenu.length;j++){%>
+                            <li class='cy-detail'>
+                                <input type="checkBox" class="checkOne"/><%=menus[i].submenu[j].submenu_name%>   
+                            </li>
+                        <%}%>
+                    </ul>
+                </li>
+            <%}%>
+        </ul>
+    </script>
+
+    <script type="text/javascript" charset="utf-8">
+        $(function () {
+            var menu = [ 
+                {
+                    menu_name : "北京总部",
+                    submenu : [ 
+                        {
+                            submenu_name : "电脑整机",
+                        },
+                        {
+                            submenu_name : "电脑显示屏",
+                        },
+                        {
+                            submenu_name : "键盘",
+                        }
+                    ]
+                }, 
+                {
+                    menu_name : "手机配件",
+                    submenu : [
+                        {
+                            submenu_name : "华为",
+                        } ,
+                        {
+                            submenu_name : "苹果",
+                        }
+                    ]
+                }
+            ];
+            var data = { menus : menu }
+            var html = template('tpl', data);
+            document.getElementById('tab').innerHTML = html;
+            $('#tab').html(html)
+
+
+        })
+    </script>
+    <script>
+        // $(function() {
+            function clickAlls(){
+                $(".checkOne").prop("checked",$(".checkAll").prop("checked"));
+            }
+                
+            function clickOne(){
+                var allChecked = true;
+                $(".checkOne").each(function(){
+                    if($(this).prop("checked") == false){
+                        allChecked = false;
+                    };
+                });
+                if(allChecked){
+                    $(".checkAll").prop("checked",true);
+                } else {
+                    $(".checkAll").prop("checked",false);
+                }
+            }
+
+            // 事件代理
+            $("#tab").on('click', ".treeMenu .inputs", function (){
+                // $(this).next().toggle(300,'linear');
+                $(this).siblings('ul').toggleClass("hidden");
+                // console.log(this)
+            })
+
+            // 给二级增加点击  全选  事件 
+            $("#tab").on('click', ".treeMenu .inputs > input", function (){
+                $(this).parents('div.inputs').siblings('ul').find('input').prop('checked', true)
+            })
+
+            // 给二级增加点击  全选  事件 
+            $("#tab").on('click', ".treeMenu .inputs > input", function (){
+               $(this).parents('div.inputs').siblings('ul').find('input').prop('checked', true)
+            })
+
+            // 给三级添加点击事件
+             $("#tab").on('click', ".treeMenu .treeMenuT > li input", function (){
+                // console.log(this)
+                _this = $(this)
+                var allChecked = true;
+                var $r = _this.parents('ul.treeMenuT').find('input')
+                $r.each(function(){
+                    if($(this).prop("checked") == false){
+                        allChecked = false;
+                    };
+                });
+                if(allChecked){
+                    $(this).parents('ul').siblings('div.inputs').find('input').prop('checked', true)
+                } else {
+                    $(this).parents('ul').siblings('div.inputs').find('input').prop('checked', false)
+                }
+
+                var allCheckeds = true;
+                var $l = _this.parents('.treeMenu').find('.treeMenuT input')
+                // console.log($l)
+                $l.each(function(){
+                    if($(this).prop("checked") == false){
+                        allChecked = false;
+                    };
+                });
+
+                if(allChecked && allCheckeds) {
+                    $(".checkAll").prop("checked",true);
+                }else {
+                    $(".checkAll").prop("checked",false);
+                }
+            })
+            
+           
+
+    </script>
+   
+    
+</body>
+</html>

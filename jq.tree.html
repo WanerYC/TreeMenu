@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>jq版本树形</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+</head>
+
+<body>
+  <ul class="farther">
+        <li class="class-1">
+            <!-- <button class="btn1">缩放</button> -->
+            <input type="checkbox" class="checkbox-1">一级
+            <ul class="class-2">
+                <li><input type="checkbox">二级</li>
+                <li><input type="checkbox">二级</li>
+                <li><input type="checkbox">二级</li>
+                <li><input type="checkbox">二级</li>
+                <li><button class="btn2">缩放</button><input type="checkbox" class="checkbox-2">二级
+                    <ul class="class-3">
+                        <li><input type="checkbox">三级</li>
+                        <li><input type="checkbox">三级</li>
+                        <li><input type="checkbox">三级</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+         <li class="class-1"><button class="btn1">缩放</button><input type="checkbox" class="checkbox-1">一级
+            <ul class="class-2">
+                <li><input type="checkbox">二级</li>
+               <li><button class="btn2">缩放</button><input type="checkbox" class="checkbox-2">二级
+                     <ul class="class-3">
+                        <li><input type="checkbox">三级</li>
+                        <li><input type="checkbox">三级</li>
+                        <li><input type="checkbox">三级</li>
+                    </ul>
+                </li>
+                <li><input type="checkbox">二级</li>
+                <li><input type="checkbox">二级</li>
+                <li><button class="btn2">缩放</button><input type="checkbox" class="checkbox-2">二级
+                     <ul class="class-3">
+                        <li><input type="checkbox">三级</li>
+                        <li><input type="checkbox">三级</li>
+                        <li><input type="checkbox">三级</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+  </ul>
+  <script>
+    $(".class-1").click(function () {
+      var parentIndex = $(this).parent().index()
+      $(".farther .class-2").eq(parentIndex).toggle()
+
+    })
+    $(".class-1").click(function () {
+      $(this).parent().children(".class-3").toggle()
+    })
+
+    $(".checkbox-1").click(function () {
+      var parentIndex = $(this).parent().index();
+      var isChecked = $(this).prop("checked");
+      $(".farther .class-2").eq(parentIndex).find("input").prop("checked", isChecked);
+    })
+    $(".checkbox-2").click(function () {
+      var parentIndex = $(this).parent().index();
+      var isChecked = $(this).prop("checked");
+      $(this).parent().find("input").prop("checked", isChecked);
+    })
+  </script>
+</body>
+
+</html>

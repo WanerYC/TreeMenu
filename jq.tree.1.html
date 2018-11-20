@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>jq版本树形</title>
+  <style>
+    *{list-style: none;font-size: 16px;}
+    #wrapTree .menu-slide-sub{
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        background-image: url("../img/sub.png");
+        /*background-position: 0 -320px;!*左右 上下*!*/
+        line-height: 20px;
+        /*vertical-align: middle;*/
+    }
+    #wrapTree  .tree-li-title{
+        line-height: 20px;
+        height: 20px;
+        vertical-align: middle;
+        cursor: default;
+    
+    }
+    #wrapTree  .menu-slide-add{
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        background-image: url("../img/add.png");
+        /*background-position: 0 -304px;!*左右 上下*!*/
+        line-height: 20px;
+        /*vertical-align: middle;*/
+    }
+
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+</head>
+
+<body>
+    <div id="wrapTree">
+      <ul>
+          <li class="tree-ul-li">
+              <span class="tree-li-title">
+                    <a class="tree-toggle menu-slide-sub" href="javascript:;" id="mianTitle"></a>
+                  存储内容
+              </span>
+              <ul>
+                  <li class="tree-ul-li">
+                      <span class="tree-li-title">
+                            <a class="tree-toggle menu-slide-sub" href="javascript:;"></a>
+                          Driver 1
+                      </span>
+                      <ul>
+                          <li class="tree-ul-li">
+                              <div>
+                                  <input type="checkbox" class="inputBox"><label>连续测试</label>
+                              </div>
+                              <div>
+                                  <input type="checkbox" class="inputBox"><label>随机测试</label>
+                              </div>
+                          </li>
+                          <li class="tree-ul-li">
+                              <div>
+                                  <input type="checkbox" class="inputBox"><label>连续测试</label>
+                              </div>
+                              <div>
+                                  <input type="checkbox" class="inputBox"><label>随机测试</label>
+                              </div>
+                          </li>
+                      </ul>
+                  </li>
+                  <li class="tree-ul-li">
+                      <span class="tree-li-title">
+                          <a class="tree-toggle menu-slide-sub" href="javascript:;"></a>
+                          Driver 2 
+                      </span>
+                      <ul>
+                          <li class="tree-ul-li">
+                              <div>
+                                  <input type="checkbox" class="inputBox"><label>连续测试</label>
+                              </div>
+                              <div>
+                                  <input type="checkbox" class="inputBox"><label>随机测试</label>
+                              </div>
+                          </li>
+                          <li class="tree-ul-li">
+                              <div>
+                                  <input type="checkbox" class="inputBox"><label>连续测试</label>
+                              </div>
+                              <div>
+                                  <input type="checkbox" class="inputBox"><label>随机测试</label>
+                              </div>
+                          </li>
+                      </ul>
+                  </li>
+              </ul>
+          </li>
+      </ul>
+  </div>
+  <script>
+    (function ($) {
+      $.fn.tree = function (option) {
+          let opt = {
+              mainTitle: "#mianTitle",
+              toggleCls: "menu-slide-add",//改变的class
+              bingEvent: "click",//绑定的事件
+          };
+          option = $.extend({}, opt, option);
+          $("#wrapTree .tree-li-title").on(option.bingEvent, ".tree-toggle", function () {
+              let result = $("#mianTitle").hasClass(option.toggleCls);
+              if (result) {
+                  $(option.mainTitle).parent().next().find("ul").hide();
+              }
+              $(this).toggleClass(option.toggleCls).parent().next("ul").slideToggle();
+          });
+          return this;
+      }
+  })($);
+  $(function () {
+      $("wrapTree").tree();
+  })
+  </script>
+</body>
+
+</html>
