@@ -22,6 +22,7 @@
    
 </head>
 <body>
+    <button onclick="Btn()">保存</button>
     <div>
         <input type="checkBox" class="checkAll" onclick="clickAlls()" id="all"/><label for="all">全选</label>
     </div>
@@ -65,7 +66,7 @@
                     <ul class="hidden treeMenuT" >
                         <%for(var j = 0;j < menus[i].submenu.length;j++){%>
                             <li class='cy-detail'>
-                                <input type="checkBox" class="checkOne"/><%=menus[i].submenu[j].submenu_name%>   
+                                <input type="checkBox" class="checkOne" value="<%=menus[i].submenu[j].submenu_name%>" /><%=menus[i].submenu[j].submenu_name%>   
                             </li>
                         <%}%>
                     </ul>
@@ -91,6 +92,17 @@
                         }
                     ]
                 }, 
+                {
+                    menu_name : "手机配件",
+                    submenu : [
+                        {
+                            submenu_name : "华为",
+                        } ,
+                        {
+                            submenu_name : "苹果",
+                        }
+                    ]
+                },
                 {
                     menu_name : "手机配件",
                     submenu : [
@@ -179,8 +191,49 @@
                 }else {
                     $(".checkAll").prop("checked",false);
                 }
+
+                // console.log(this.value)
             })
-            
+
+            // 点击保存按钮  把所有选中的input值传过去
+
+            function Btn () {
+                // alert ('sdsdfsdf')
+                // 获取到所有选中的input的值
+                var ee = $(":checked")
+                var arr1 = []
+                // console.log(ee)
+                for(var i = 0; i < ee.length; i++) {
+                    // console.log(ee[i].value)
+                    // arr1.push(ee[i].value)
+                    if(ee[i].value != 'on') {
+                        arr1.push(ee[i].value)
+                    }
+                }
+                // let resultarr = [...new Set(arr1)];
+                // console.log(resultarr)
+               
+                console.log(uniq(arr1))
+            }
+
+            // 数组去重
+            function uniq(array){
+                var temp = [];
+                var index = [];
+                var l = array.length;
+                for(var i = 0; i < l; i++) {
+                    for(var j = i + 1; j < l; j++){
+                        if (array[i] === array[j]){
+                            i++;
+                            j = i;
+                        }
+                    }
+                    temp.push(array[i]);
+                    index.push(i);
+                }
+                // console.log(index);
+                return temp;  
+            }
            
 
     </script>
